@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sowmiya K — UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep:    #0D1B2A;
+    --navy:    #1A2D44;
+    --teal:    #00B4D8;
+    --aqua:    #48CAE4;
+    --glow:    #00F5FF;
+    --coral:   #FF6B6B;
+    --gold:    #FFD166;
+    --tp:      #E8F4F8;
+    --ts:      #94B4C8;
+    --tm:      #4A6B82;
+    --s1:      #111E2D;
+    --s2:      #162333;
+    --s3:      #1D2F42;
+    --border:  rgba(0,180,216,0.15);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',sans-serif;background:var(--deep);color:var(--tp);overflow-x:hidden;cursor:none}
+
+  /* Cursor */
+  .cur{width:10px;height:10px;background:var(--glow);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;box-shadow:0 0 15px var(--glow),0 0 30px rgba(0,245,255,.4)}
+  .cur-r{width:36px;height:36px;border:1.5px solid rgba(0,245,255,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform .12s ease,width .2s,height .2s,opacity .2s}
+  .cur-r.ex{width:56px;height:56px;opacity:.4}
+  @media(max-width:768px){body{cursor:auto}.cur,.cur-r{display:none}}
+
+  /* Noise */
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+  nav.sc{border-color:var(--border);background:rgba(13,27,42,.98)}
+  .logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--teal),var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav-links{display:flex;gap:40px;list-style:none}
+  .nav-links a{font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ts);text-decoration:none;transition:color .2s;position:relative}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--teal);transform:scaleX(0);transition:transform .3s}
+  .nav-links a:hover{color:var(--tp)}
+  .nav-links a:hover::after{transform:scaleX(1)}
+  @media(max-width:768px){nav{padding:16px 24px}.nav-links{display:none}}
+
+  /* Hero */
+  #hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 60px 80px}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 40%,rgba(0,180,216,.12) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(0,245,255,.06) 0%,transparent 60%)}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,216,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 70% 40%,black 30%,transparent 70%)}
+  .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+  .orb1{width:400px;height:400px;background:rgba(0,180,216,.08);top:10%;right:-100px;animation:float 8s ease-in-out infinite}
+  .orb2{width:250px;height:250px;background:rgba(0,245,255,.05);bottom:20%;left:-60px;animation:float 10s ease-in-out infinite reverse}
+  .hero-c{position:relative;z-index:2;max-width:760px}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.2);border-radius:100px;padding:6px 16px;font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--aqua);margin-bottom:28px;animation:fadeUp .8s ease both}
+  .hero-tag span{width:6px;height:6px;background:var(--glow);border-radius:50%;animation:pulse 2s infinite}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:800;line-height:1;letter-spacing:-2px;animation:fadeUp .8s .1s ease both}
+  h1 .hl{background:linear-gradient(135deg,var(--teal) 0%,var(--glow) 50%,var(--aqua) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--ts);line-height:1.7;max-width:520px;margin-top:24px;font-weight:300;animation:fadeUp .8s .2s ease both}
+  .hero-sub strong{color:var(--tp);font-weight:500}
+  .hero-ctas{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;animation:fadeUp .8s .3s ease both}
+  .btn-p{display:inline-flex;align-items:center;gap:10px;background:var(--teal);color:var(--deep);font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:14px 28px;border-radius:8px;text-decoration:none;transition:all .3s;box-shadow:0 0 30px rgba(0,180,216,.3);border:none;cursor:none}
+  .btn-p:hover{background:var(--glow);box-shadow:0 0 50px rgba(0,245,255,.5),0 8px 24px rgba(0,0,0,.3);transform:translateY(-2px)}
+  .btn-g{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--tp);font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem;padding:13px 28px;border-radius:8px;border:1px solid rgba(0,180,216,.3);text-decoration:none;transition:all .3s;cursor:none}
+  .btn-g:hover{border-color:var(--teal);background:rgba(0,180,216,.08);box-shadow:0 0 20px rgba(0,245,255,.15);transform:translateY(-2px)}
+  .scroll-hint{position:absolute;bottom:40px;left:60px;display:flex;align-items:center;gap:12px;color:var(--tm);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;animation:fadeUp 1s .6s ease both}
+  .scroll-line{width:40px;height:1px;background:var(--tm)}
+
+  /* Sections */
+  section{padding:120px 60px;position:relative}
+  .s-label{display:inline-flex;align-items:center;gap:10px;font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+  .s-label::before{content:'';width:24px;height:1px;background:var(--teal)}
+  h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
+  .divider{width:60px;height:2px;background:linear-gradient(90deg,var(--teal),transparent);margin:0 0 48px}
+  @media(max-width:768px){section,#hero{padding:80px 24px}}
+
+  /* About */
+  #about{background:var(--s1)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px}
+  @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:48px}}
+  .about-text p{font-size:1.05rem;line-height:1.8;color:var(--ts);margin-bottom:18px}
+  .about-text p strong{color:var(--tp);font-weight:500}
+  .about-text em{color:var(--aqua);font-style:italic}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+  .stat{background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:22px;transition:all .3s}
+  .stat:hover{border-color:rgba(0,180,216,.4);box-shadow:0 0 20px rgba(0,245,255,.15);transform:translateY(-3px)}
+  .stat-n{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--teal),var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+  .stat-l{font-size:.8rem;color:var(--tm);margin-top:5px}
+
+  /* Skills */
+  .skills{display:flex;flex-direction:column;gap:24px}
+  .sk-cat-name{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--tm);margin-bottom:10px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{background:rgba(0,180,216,.06);border:1px solid rgba(0,180,216,.2);border-radius:100px;padding:6px 16px;font-size:.85rem;color:var(--aqua);transition:all .25s}
+  .pill:hover{background:rgba(0,180,216,.15);border-color:var(--teal);box-shadow:0 0 20px rgba(0,245,255,.15);transform:translateY(-2px)}
+  .pill.learning{color:var(--gold);border-color:rgba(255,209,102,.25);background:rgba(255,209,102,.06)}
+  .pill.learning:hover{background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.5)}
+
+  /* Projects */
+  #projects{background:var(--deep)}
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:60px}
+  @media(max-width:768px){.proj-grid{grid-template-columns:1fr}}
+  .proj-card{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:40px;transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;cursor:none}
+  .proj-card::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;transition:opacity .3s}
+  .proj-card:hover{transform:translateY(-8px);border-color:rgba(0,180,216,.4);box-shadow:0 0 40px rgba(0,245,255,.2),0 20px 60px rgba(0,0,0,.4)}
+  .proj-card:hover::before{opacity:1}
+  .proj-badge{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:20px}
+  .badge-cs{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.25);color:var(--teal)}
+  .badge-ui{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);color:var(--gold)}
+  .proj-card h3{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:10px}
+  .proj-tool{font-size:.8rem;color:var(--tm);margin-bottom:20px;display:flex;align-items:center;gap:6px}
+  .proj-tool svg{width:14px;height:14px;color:var(--teal)}
+  .proj-desc{font-size:.92rem;color:var(--ts);line-height:1.7;margin-bottom:24px}
+  .proj-wins{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+  .proj-wins li{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--ts);line-height:1.5}
+  .proj-wins li::before{content:'→';color:var(--teal);flex-shrink:0;font-size:.85rem;margin-top:1px}
+  .proj-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:.73rem;padding:4px 10px;background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.12);border-radius:4px;color:var(--tm);letter-spacing:.04em}
+None
+
+  /* Case Studies */
+  #casestudies{background:var(--s1)}
+  .tabs{display:flex;border-bottom:1px solid var(--border);margin-top:60px;overflow-x:auto}
+  .tab{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:600;color:var(--tm);padding:14px 32px;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;cursor:none;transition:all .25s;white-space:nowrap}
+  .tab.on{color:var(--teal);border-bottom-color:var(--teal)}
+  .tab:hover:not(.on){color:var(--ts)}
+  .panel{display:none;padding:48px 0 0;animation:fadeUp .4s ease}
+  .panel.on{display:block}
+  .cs-meta{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+  .cs-meta-item{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:14px 20px;min-width:140px}
+  .cs-meta-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);margin-bottom:4px}
+  .cs-meta-val{font-size:.92rem;font-weight:500;color:var(--tp)}
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+  .flow::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent)}
+  @media(max-width:1024px){.flow{grid-template-columns:1fr 1fr;gap:24px}.flow::before{display:none}}
+  @media(max-width:480px){.flow{grid-template-columns:1fr}}
+  .step{text-align:center;padding:0 12px}
+  .dot{width:64px;height:64px;border-radius:50%;background:var(--s3);border:1.5px solid rgba(0,180,216,.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 16px;position:relative;z-index:2;transition:all .3s}
+  .step:hover .dot{border-color:var(--teal);box-shadow:0 0 20px rgba(0,245,255,.15);transform:scale(1.1)}
+  .step-t{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+  .step-d{font-size:.84rem;color:var(--ts);line-height:1.6}
+  .step-out{font-size:.8rem;color:var(--gold);margin-top:6px;font-style:italic}
+
+  /* Resume */
+  #resume{background:var(--deep)}
+  .resume-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:60px}
+  @media(max-width:768px){.resume-grid{grid-template-columns:1fr}}
+  .r-col h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--aqua);text-transform:uppercase;letter-spacing:.08em;margin-bottom:24px;display:flex;align-items:center;gap:8px}
+  .r-col h3 svg{width:16px;height:16px}
+  .r-item{border-left:2px solid var(--border);padding:0 0 32px 24px;position:relative}
+  .r-item:last-child{padding-bottom:0}
+  .r-item::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal);border:2px solid var(--deep);position:absolute;left:-5px;top:5px}
+  .r-item-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px}
+  .r-item-sub{font-size:.88rem;color:var(--teal);margin-bottom:4px}
+  .r-item-date{font-size:.78rem;color:var(--tm);margin-bottom:8px}
+  .r-item-desc{font-size:.88rem;color:var(--ts);line-height:1.6}
+  .r-item-bullets{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:5px}
+  .r-item-bullets li{font-size:.85rem;color:var(--ts);display:flex;gap:8px;line-height:1.5}
+  .r-item-bullets li::before{content:'·';color:var(--teal);font-size:1.2rem;flex-shrink:0;line-height:1.2}
+  .dl-btn{display:inline-flex;align-items:center;gap:10px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.25);color:var(--teal);font-family:'Syne',sans-serif;font-weight:600;font-size:.88rem;padding:12px 24px;border-radius:8px;text-decoration:none;transition:all .3s;margin-top:40px;cursor:none}
+  .dl-btn:hover{background:rgba(0,180,216,.15);box-shadow:0 0 20px rgba(0,245,255,.15);transform:translateY(-2px)}
+
+  /* Contact */
+  #contact{background:var(--s1);text-align:center}
+  .contact-inner{max-width:580px;margin:0 auto}
+  .contact-sub{font-size:1rem;color:var(--ts);line-height:1.7;margin-bottom:44px}
+  .email-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--navy),var(--s3));border:1px solid rgba(0,180,216,.25);color:var(--tp);font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;padding:18px 36px;border-radius:12px;text-decoration:none;transition:all .35s;box-shadow:0 0 20px rgba(0,245,255,.12)}
+  .email-btn:hover{background:linear-gradient(135deg,rgba(0,180,216,.15),rgba(0,245,255,.1));border-color:var(--teal);box-shadow:0 0 40px rgba(0,245,255,.2);transform:translateY(-3px)}
+  .social-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:36px}
+  .slink{display:inline-flex;align-items:center;gap:8px;color:var(--ts);font-size:.88rem;text-decoration:none;padding:10px 20px;border:1px solid var(--border);border-radius:8px;transition:all .3s}
+  .slink:hover{color:var(--teal);border-color:rgba(0,180,216,.4);box-shadow:0 0 20px rgba(0,245,255,.12)}
+  .slink svg{width:15px;height:15px}
+
+  footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 60px;display:flex;justify-content:space-between;align-items:center}
+  .ft{font-size:.8rem;color:var(--tm)}
+  @media(max-width:768px){footer{padding:24px;flex-direction:column;gap:8px;text-align:center}}
+
+  /* Animations */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.vis{opacity:1;transform:translateY(0)}
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">SK.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#casestudies">Case Studies</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-c">
+    <div class="hero-tag"><span></span>Open to internship opportunities</div>
+    <h1>Designing <span class="hl">intuitive<br>experiences</span> that<br>put users first.</h1>
+    <p class="hero-sub">
+      I'm <strong>Sowmiya K</strong> — a UI/UX Designer and BSc CS student specialising in AI. I craft clean, accessible, user-centered interfaces using Figma and structured design thinking.
+    </p>
+    <div class="hero-ctas">
+      <a href="mailto:sowmiyakennedy97@gmail.com" class="btn-g">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+        Get in Touch
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll to explore</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="s-label">About Me</div>
+  <h2>The person behind<br>the pixels</h2>
+  <div class="divider"></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>BSc Computer Science student specialising in Artificial Intelligence</strong> at Sathyabama University (2024–2027). I bring analytical, data-informed thinking into every design decision.</p>
+      <p>I'm passionate about <strong>simplifying complex user flows</strong> and improving usability through structured, user-centered design. I approach every project by first asking: <em>what problem are we really solving for the user?</em></p>
+      <p>Currently expanding my skills into <strong>frontend development</strong> (HTML & CSS), design systems, and motion design to bridge the gap between design and engineering.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-n">2</div><div class="stat-l">UX Projects</div></div>
+        <div class="stat"><div class="stat-n">AI</div><div class="stat-l">Specialisation</div></div>
+        <div class="stat"><div class="stat-n">Figma</div><div class="stat-l">Primary Tool</div></div>
+        <div class="stat"><div class="stat-n">A11y</div><div class="stat-l">Accessibility First</div></div>
+      </div>
+    </div>
+    <div class="skills reveal d1">
+      <div>
+        <div class="sk-cat-name">UX Design</div>
+        <div class="pills">
+          <span class="pill">User Research</span><span class="pill">Wireframing</span>
+          <span class="pill">Prototyping</span><span class="pill">User Flows</span>
+          <span class="pill">Usability Testing</span>
+        </div>
+      </div>
+      <div>
+        <div class="sk-cat-name">UI Design</div>
+        <div class="pills">
+          <span class="pill">Typography</span><span class="pill">Color Theory</span>
+          <span class="pill">Layout Design</span><span class="pill">Visual Hierarchy</span>
+        </div>
+      </div>
+      <div>
+        <div class="sk-cat-name">Tools</div>
+        <div class="pills">
+          <span class="pill">Figma</span><span class="pill">Canva</span>
+        </div>
+      </div>
+      <div>
+        <div class="sk-cat-name">Currently Learning ✨</div>
+        <div class="pills">
+          <span class="pill learning">HTML & CSS</span>
+          <span class="pill learning">Design Systems</span>
+          <span class="pill learning">Motion Design</span>
+          <span class="pill learning">Frontend Basics</span>
+        </div>
+      </div>
+      <div>
+        <div class="sk-cat-name">Soft Skills</div>
+        <div class="pills">
+          <span class="pill">Problem Solving</span><span class="pill">Creative Thinking</span>
+          <span class="pill">Attention to Detail</span><span class="pill">Team Collaboration</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="s-label">Projects</div>
+  <h2>Things I've designed</h2>
+  <div class="divider"></div>
+  <div class="proj-grid">
+
+    <!-- Zoo -->
+    <div class="proj-card reveal">
+      <div class="proj-badge badge-cs">🔬 UX Case Study</div>
+      <h3>Zoo Ticket Booking App</h3>
+      <div class="proj-tool">Figma — Full UX Case Study</div>
+      <p class="proj-desc">A full redesign of the zoo ticket booking experience focused on reducing user drop-off and improving the flow for first-time visitors and families.</p>
+      <ul class="proj-wins">
+        <li>Simplified booking flow from 6 steps down to 3</li>
+        <li>Designed wireframes and interactive prototypes in Figma</li>
+        <li>Improved usability for first-time users and families through structured navigation</li>
+        <li>Conducted user research to identify and validate key pain points</li>
+      </ul>
+      <div class="proj-tags">
+        <span class="tag">User Research</span><span class="tag">Wireframing</span>
+        <span class="tag">Prototyping</span><span class="tag">Usability Testing</span>
+        <span class="tag">Figma</span>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="proj-card reveal d1">
+      <div class="proj-badge badge-ui">🎨 UI Design</div>
+      <h3>Notes App</h3>
+      <div class="proj-tool">Figma — UI Design & Handoff</div>
+      <p class="proj-desc">A distraction-free note-taking app designed for visual clarity, readability, and accessibility. Focused on creating an interface that stays out of the user's way.</p>
+      <ul class="proj-wins">
+        <li>Designed a clean, minimal note-taking interface in Figma</li>
+        <li>Prioritised readability, accessibility, and intuitive layout throughout</li>
+        <li>Created high-fidelity UI screens ready for developer handoff</li>
+        <li>Defined reusable components to ensure design consistency</li>
+      </ul>
+      <div class="proj-tags">
+        <span class="tag">UI Design</span><span class="tag">Accessibility</span>
+        <span class="tag">Components</span><span class="tag">High-Fidelity</span>
+        <span class="tag">Figma</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="casestudies">
+  <div class="s-label">Case Studies</div>
+  <h2>Design thinking in action</h2>
+  <div class="divider"></div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="zoo">🦁 Zoo Booking App</button>
+    <button class="tab" data-t="notes">📝 Notes App</button>
+  </div>
+
+  <!-- Zoo Panel -->
+  <div class="panel on" id="p-zoo">
+    <div class="cs-meta">
+      <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-val">UX Designer</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Tool</div><div class="cs-meta-val">Figma</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Type</div><div class="cs-meta-val">Full Case Study</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Key Win</div><div class="cs-meta-val">6 steps → 3</div></div>
+    </div>
+    <div class="flow">
+      <div class="step reveal"><div class="dot">🔍</div><div class="step-t">Discover</div><div class="step-d">Users were abandoning the booking flow due to too many confusing steps and unclear navigation.</div></div>
+      <div class="step reveal d1"><div class="dot">📊</div><div class="step-t">Research</div><div class="step-d">Conducted user research to identify drop-off points. Found that first-time visitors and families struggled most.</div></div>
+      <div class="step reveal d2"><div class="dot">✏️</div><div class="step-t">Wireframe</div><div class="step-d">Reduced the booking flow from 6 steps to 3. Sketched and tested multiple wireframe structures in Figma.</div></div>
+      <div class="step reveal d3"><div class="dot">🎨</div><div class="step-t">Prototype</div><div class="step-d">Built interactive high-fidelity prototypes in Figma with clear CTAs, progress indicators, and structured navigation.</div></div>
+      <div class="step reveal d3"><div class="dot">✅</div><div class="step-t">Outcome</div><div class="step-d">Simpler, faster booking experience for all users.<div class="step-out">Reduced friction & drop-off</div></div></div>
+    </div>
+  </div>
+
+  <!-- Notes Panel -->
+  <div class="panel" id="p-notes">
+    <div class="cs-meta">
+      <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-val">UI Designer</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Tool</div><div class="cs-meta-val">Figma</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Type</div><div class="cs-meta-val">UI Design</div></div>
+      <div class="cs-meta-item"><div class="cs-meta-label">Focus</div><div class="cs-meta-val">Accessibility</div></div>
+    </div>
+    <div class="flow">
+      <div class="step reveal"><div class="dot">🔍</div><div class="step-t">Problem</div><div class="step-d">Existing note-taking apps overwhelm users with cluttered UIs, hurting focus and readability.</div></div>
+      <div class="step reveal d1"><div class="dot">🎯</div><div class="step-t">Goals</div><div class="step-d">Design a distraction-free interface with strong visual hierarchy, readable typography, and accessibility compliance.</div></div>
+      <div class="step reveal d2"><div class="dot">🧩</div><div class="step-t">Components</div><div class="step-d">Built a reusable component library in Figma to keep the design consistent and easy to hand off to developers.</div></div>
+      <div class="step reveal d3"><div class="dot">🎨</div><div class="step-t">UI Design</div><div class="step-d">Created high-fidelity screens. Focused on whitespace, contrast ratios, and an intuitive layout with zero learning curve.</div></div>
+      <div class="step reveal d3"><div class="dot">✅</div><div class="step-t">Outcome</div><div class="step-d">Clean, handoff-ready UI screens.<div class="step-out">Accessible, minimal, user-focused</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="s-label">Resume</div>
+  <h2>Education &amp; experience</h2>
+  <div class="divider"></div>
+  <div class="resume-grid">
+    <div class="r-col reveal">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Education</h3>
+      <div class="r-item">
+        <div class="r-item-title">B.Sc Computer Science (AI Specialisation)</div>
+        <div class="r-item-sub">Sathyabama University</div>
+        <div class="r-item-date">2024 – 2027</div>
+        <div class="r-item-desc">Relevant coursework: Human-Computer Interaction, AI Fundamentals, Data Structures. Applying AI and analytical thinking to data-informed, user-centered design.</div>
+      </div>
+    </div>
+    <div class="r-col reveal d1">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Projects & Achievements</h3>
+      <div class="r-item">
+        <div class="r-item-title">Zoo Ticket Booking App</div>
+        <div class="r-item-sub">UX Case Study · Figma</div>
+        <ul class="r-item-bullets">
+          <li>Reduced booking flow from 6 to 3 steps</li>
+          <li>Wireframes, interactive prototypes & user research</li>
+          <li>Improved usability for first-time visitors & families</li>
+        </ul>
+      </div>
+      <div class="r-item">
+        <div class="r-item-title">Notes App</div>
+        <div class="r-item-sub">UI Design · Figma</div>
+        <ul class="r-item-bullets">
+          <li>High-fidelity screens, accessibility-focused</li>
+          <li>Reusable component system for handoff</li>
+          <li>Distraction-free, minimal interface design</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <a href="resume.pdf" class="dl-btn" target="_blank">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download Full Resume (PDF)
+  </a>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="s-label" style="justify-content:center">Contact</div>
+    <h2 style="margin-bottom:16px">Let's create something<br><span style="background:linear-gradient(135deg,var(--teal),var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent">great together</span></h2>
+    <p class="contact-sub">Whether you have a project, an internship opportunity, or just want to say hello — I'd love to hear from you.</p>
+    <a href="mailto:sowmiyakennedy97@gmail.com" class="email-btn">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      sowmiyakennedy97@gmail.com
+    </a>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/sowmiya-kennedy-154856334" target="_blank" class="slink">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://sowmiyakennedy97-oss.github.io/portfolio" target="_blank" class="slink">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="tel:+919840984443" class="slink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.3 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 21.72 16z"/></svg>
+        +91 98409 84443
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">© 2026 Sowmiya K. All rights reserved.</div>
+  <div class="ft">Crafted with <span style="color:var(--teal)">♥</span> and lots of ☕</div>
+</footer>
+
+<script>
+  // Cursor
+  const cur = document.getElementById('cur'), curR = document.getElementById('curR');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function anim() {
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    cur.style.transform=`translate(${mx-5}px,${my-5}px)`;
+    curR.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a,button,.proj-card,.pill,.stat').forEach(el => {
+    el.addEventListener('mouseenter',()=>curR.classList.add('ex'));
+    el.addEventListener('mouseleave',()=>curR.classList.remove('ex'));
+  });
+
+  // Nav scroll
+  window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>40));
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+      tab.classList.add('on');
+      const panel = document.getElementById('p-'+tab.dataset.t);
+      panel.classList.add('on');
+      panel.querySelectorAll('.reveal').forEach(el=>{
+        el.classList.remove('vis');
+        setTimeout(()=>el.classList.add('vis'),60);
+      });
+    });
+  });
+</script>
+</body>
+</html>
